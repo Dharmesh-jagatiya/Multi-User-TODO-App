@@ -1,0 +1,88 @@
+{% extends 'Navbar.html' %}
+{% block content %}
+<!-- navbae code start -->
+ <div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+      <li class="nav-item"><a class="nav-link" href="logout">Logout</a></li>
+
+  </div>
+
+{% endblock %}
+ {% block Navlogin %}
+        <h7>{{logedin}}</h7>
+ {% endblock %}
+
+{% block form %}
+<div class="container ">
+<div class="row p-0 mt-4" >
+    <div class="shadow col-lg-4 mx-auto p-0">
+        <div class="alert alert-info"><h2>Add New TODO</h2></div>
+            <div class="p-4 " >
+                <form action="/add-todo/" method="post" >
+                     {% csrf_token %}
+                     {{formdata.as_p}}
+                        <hr>
+                    <input class="btn btn-info" type="submit" value="ADD" >
+                </form>
+            </div>
+        </div>
+
+    <div class="col">
+        <div class="border">
+             {%if todos|length == 0 %}
+                <div class="p-4">
+                    <br>
+                    <br>
+                <div class="alert alert-info text-center">
+                    <p class="display-4" style="font-size: 30px">Add Your Todo</p>
+                </div>
+                    <br>
+                    <br>
+                </div>
+                {% else %}
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <!--<th>User</th>-->
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for todo in todos %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <!--<td>{{todo.user}}</td>-->
+                    <td>{{todo.title}}</td>
+                    <td>{{todo.status}}</td>
+                    <td>{{todo.priority}}</td>
+                    <td><a href="delete-todo/{{todo.id}}" title="Delete">🗑️</a>
+                    {% if todo.status == 'P' %}
+                    <a href="status/{{todo.id}}/C" title="Copleted">✅</a>
+                    {% else %}
+                    <a href="status/{{todo.id}}/P" title="Pending">🕖️</a>
+                    </td>
+                    {% endif %}
+                {% endfor %}
+                </tr>
+                </tbody>
+                {% endif %}
+            </table>
+        </div>
+
+
+    </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
